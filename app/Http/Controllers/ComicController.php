@@ -2,63 +2,42 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comic;
 use Illuminate\Http\Request;
 
 class ComicController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // Mostra l'elenco dei fumetti.
     public function index()
     {
-        //
+        $comics = Comic::all();
+        return view('comics.index', compact('comics'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    // Mostra il form per creare un nuovo fumetto.
     public function create()
     {
-        //
+        return view('comics.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    // Salva un nuovo fumetto nel database.
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+            'author' => 'required',
+        ]);
+
+        Comic::create($request->all());
+
+        return redirect()->route('comics.index')
+                         ->with('success', 'Fumetto creato con successo.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    // Mostra un fumetto specifico.
+    public function show(Comic $comic)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return view('comics.show', compact('comic'));
     }
 }
