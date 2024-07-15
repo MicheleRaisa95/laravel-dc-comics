@@ -22,5 +22,7 @@
     <main>
         @yield('content')
     </main>
+    <!-- Includi JavaScript nel layout principale -->
+<script src="{{ asset('js/confirm-delete.js') }}"></script>
 </body>
 </html>

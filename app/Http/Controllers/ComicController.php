@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Comic;
 
-
 class ComicController extends Controller
 {
     public function index()
@@ -37,4 +36,33 @@ class ComicController extends Controller
         $comic = Comic::findOrFail($id);
         return view('comics.show', compact('comic'));
     }
+
+    public function edit($id)
+    {
+        $comic = Comic::findOrFail($id);
+        return view('comics.edit', compact('comic'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+            'author' => 'required',
+        ]);
+
+        $comic = Comic::findOrFail($id);
+        $comic->update($validated);
+
+        return redirect()->route('comics.index');
+    }
+
+   public function destroy($id)
+{
+    $comic = Comic::findOrFail($id);
+    $comic->delete();
+
+    return redirect()->route('comics.index');
+}
+
 }
