@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreComicRequest;
+use App\Http\Requests\UpdateComicRequest;
 use App\Models\Comic;
 
 class ComicController extends Controller
@@ -18,15 +19,9 @@ class ComicController extends Controller
         return view('comics.create');
     }
 
-    public function store(Request $request)
+    public function store(StoreComicRequest $request)
     {
-        $validated = $request->validate([
-            'title' => 'required',
-            'description' => 'required',
-            'author' => 'required',
-        ]);
-
-        Comic::create($validated);
+        Comic::create($request->validated());
 
         return redirect()->route('comics.index');
     }
@@ -43,26 +38,20 @@ class ComicController extends Controller
         return view('comics.edit', compact('comic'));
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateComicRequest $request, $id)
     {
-        $validated = $request->validate([
-            'title' => 'required',
-            'description' => 'required',
-            'author' => 'required',
-        ]);
-
         $comic = Comic::findOrFail($id);
-        $comic->update($validated);
+        $comic->update($request->validated());
 
         return redirect()->route('comics.index');
     }
 
-   public function destroy($id)
-{
-    $comic = Comic::findOrFail($id);
-    $comic->delete();
+    public function destroy($id)
+    {
+        $comic = Comic::findOrFail($id);
+        $comic->delete();
 
-    return redirect()->route('comics.index');
+        return redirect()->route('comics.index');
+    }
 }
 
-}

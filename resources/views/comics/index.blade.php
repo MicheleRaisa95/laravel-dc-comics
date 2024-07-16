@@ -1,24 +1,19 @@
 @extends('layout')
 
+@extends('layout')
+
 @section('content')
-    <h1>Fumetti</h1>
-    <a href="{{ route('comics.create') }}">Crea Nuovo Fumetto</a>
-    <ul>
-        @foreach ($comics as $comic)
-            <li>
-                <a href="{{ route('comics.show', $comic->id) }}">{{ $comic->title }}</a>
-                <a href="{{ route('comics.edit', $comic->id) }}">Modifica</a>
-               <form action="{{ route('comics.destroy', $comic->id) }}" method="POST" style="display:inline;">
-    @csrf
-    @method('DELETE')
-    <button type="submit" class="delete-btn">Elimina</button>
-</form>
-
-            </li>
-        @endforeach
-    </ul>
-
-    <!-- Include JavaScript -->
-    <script src="{{ asset('js/confirm-delate.js') }}"></script>
+    <div class="container">
+        <h1 class="text-center my-5">Current Series</h1>
+        <div class="comics-list">
+            @foreach ($comics as $comic)
+                <div class="comic-item">
+                    <img src="{{ $comic->thumb }}" alt="{{ $comic->title }}">
+                    <h3>{{ $comic->title }}</h3>
+                    <p>{{ $comic->series }}</p>
+                </div>
+            @endforeach
+        </div>
+        <button class="btn btn-primary load-more">Load More</button>
+    </div>
 @endsection
-
